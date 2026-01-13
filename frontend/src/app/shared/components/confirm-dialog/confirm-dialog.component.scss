@@ -1,0 +1,142 @@
+@use '../../../../styles/abstracts/mixins' as *;
+
+.confirm-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-8) var(--spacing-6) var(--spacing-6);
+  text-align: center;
+  min-width: 360px;
+  max-width: 420px;
+
+  // Icon
+  .confirm-icon {
+    @include flex-center;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto var(--spacing-6);
+    background: rgba(var(--error-rgb), 0.15);
+    border-radius: var(--radius-full);
+    color: var(--error);
+    flex-shrink: 0;
+    transition: all var(--transition-base);
+    animation: iconPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    &.danger {
+      background: rgba(var(--error-rgb), 0.15);
+      color: var(--error);
+    }
+
+    &.warning {
+      background: rgba(var(--warning-rgb), 0.15);
+      color: var(--warning);
+    }
+
+    &.info {
+      background: rgba(124, 143, 168, 0.15);
+      color: var(--info);
+    }
+  }
+
+  // Content
+  .confirm-content {
+    width: 100%;
+    margin-bottom: var(--spacing-6);
+    animation: contentFadeIn 0.4s ease-out 0.15s both;
+  }
+
+  .confirm-title {
+    @include heading-3;
+    text-align: center;
+    margin: 0 0 var(--spacing-3) 0;
+    color: var(--text-primary);
+  }
+
+  .confirm-message {
+    @include body;
+    color: var(--text-secondary);
+    text-align: center;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  // Actions
+  .confirm-actions {
+    @include flex-row(var(--spacing-3));
+    justify-content: center;
+    width: 100%;
+    margin-top: var(--spacing-2);
+    animation: actionsSlideUp 0.4s ease-out 0.2s both;
+  }
+
+  // Buttons
+  .btn {
+    min-width: 100px;
+    font-weight: 600;
+  }
+
+  .btn-danger {
+    @include btn-base;
+    padding: var(--spacing-3) var(--spacing-5);
+    background: var(--error);
+    color: var(--text-inverted);
+    border-radius: var(--radius-md);
+
+    &:hover:not(:disabled) {
+      background: rgba(var(--error-rgb), 0.9);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: var(--shadow-sm);
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+    }
+  }
+}
+
+// ==========================================
+// ANIMATIONS
+// ==========================================
+
+@keyframes iconPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes actionsSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

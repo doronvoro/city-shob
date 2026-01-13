@@ -1,0 +1,342 @@
+// ============================================
+// Task Dashboard - Modern List Design
+// ============================================
+
+.task-dashboard {
+  max-width: var(--container-md);
+  margin: 0 auto;
+  padding: var(--spacing-6) var(--spacing-4);
+  padding-top: calc(var(--header-height) + var(--spacing-8));
+  animation: slideUp 0.4s ease-out;
+}
+
+// ==========================================
+// Dashboard Header
+// ==========================================
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-8);
+  gap: var(--spacing-4);
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.page-title {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.task-stats {
+  display: flex;
+  gap: var(--spacing-4);
+}
+
+.stat-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-1);
+
+  .stat-count {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .stat-label {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  &.stat-completed .stat-count {
+    color: var(--success);
+  }
+}
+
+.add-task-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-5);
+  background: var(--accent-primary);
+  color: var(--text-inverted);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--accent-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
+// ==========================================
+// Task Sections
+// ==========================================
+
+.task-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+.task-section {
+  animation: slideUp 0.4s ease-out;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-4);
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.section-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.completed-section {
+  .section-count {
+    background: rgba(var(--success-rgb), 0.15);
+    color: var(--success);
+  }
+}
+
+// ==========================================
+// Task List
+// ==========================================
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.stagger-list {
+  app-task-item {
+    animation: taskSlideIn 0.4s ease-out both;
+    animation-delay: var(--stagger-delay, 0s);
+  }
+}
+
+// ==========================================
+// Empty State
+// ==========================================
+
+.task-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-16) var(--spacing-6);
+  text-align: center;
+  animation: slideUp 0.5s ease-out;
+}
+
+.empty-illustration {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin-bottom: var(--spacing-6);
+}
+
+.empty-shapes {
+  position: absolute;
+  inset: 0;
+
+  .shape {
+    position: absolute;
+    border-radius: var(--radius-xl);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-default);
+
+    &:first-child {
+      width: 100px;
+      height: 60px;
+      top: 30%;
+      left: 20%;
+      transform: rotate(-8deg);
+    }
+
+    &:last-child {
+      width: 100px;
+      height: 60px;
+      top: 40%;
+      left: 30%;
+      transform: rotate(4deg);
+      background: var(--bg-secondary);
+      box-shadow: var(--shadow-md);
+    }
+  }
+}
+
+.empty-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+
+  mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: var(--text-muted);
+  }
+}
+
+.empty-title {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.empty-description {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  max-width: 280px;
+  margin-bottom: var(--spacing-6);
+}
+
+// ==========================================
+// Floating Action Button
+// ==========================================
+
+.fab {
+  position: fixed;
+  bottom: var(--spacing-6);
+  right: var(--spacing-6);
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+
+  background: var(--accent-primary);
+  color: var(--text-inverted);
+  border: none;
+  border-radius: var(--radius-full);
+
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: fabEntrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+  z-index: var(--z-fixed);
+
+  @media (max-width: 600px) {
+    display: flex;
+  }
+
+  &:hover {
+    transform: scale(1.08);
+    box-shadow: var(--shadow-glow), var(--shadow-lg);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+// ==========================================
+// Animations
+// ==========================================
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes taskSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fabEntrance {
+  from {
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}

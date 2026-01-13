@@ -1,0 +1,200 @@
+// ============================================
+// CityShob Design System - Dialog Components
+// ============================================
+
+@use '../abstracts/mixins' as *;
+
+// ==========================================
+// DIALOG BACKDROP
+// ==========================================
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: var(--z-modal-backdrop);
+  animation: dialogBackdropIn 0.2s ease-out;
+}
+
+// ==========================================
+// SIDE SHEET DIALOG (Task Edit/Create)
+// ==========================================
+
+.side-sheet {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 520px;
+  background: var(--bg-elevated);
+  border-left: 1px solid var(--border-default);
+  z-index: var(--z-modal);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: sheetSlideIn 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+
+  &.closing {
+    animation: sheetSlideOut 0.2s ease-out forwards;
+  }
+
+  @include mobile {
+    max-width: 100%;
+    border-left: none;
+  }
+}
+
+.side-sheet-header {
+  @include flex-between;
+  padding: var(--spacing-5) var(--spacing-6);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.side-sheet-title {
+  @include heading-3;
+}
+
+.side-sheet-close {
+  @include btn-icon;
+}
+
+.side-sheet-content {
+  flex: 1;
+  padding: var(--spacing-6);
+  overflow-y: auto;
+  @include scrollbar-thin;
+}
+
+.side-sheet-footer {
+  @include flex-row(var(--spacing-3));
+  justify-content: flex-end;
+  padding: var(--spacing-5) var(--spacing-6);
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+// ==========================================
+// CENTERED MODAL DIALOG
+// ==========================================
+
+.modal-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 480px;
+  max-height: 90vh;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-modal);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalZoomIn 0.2s ease-out;
+}
+
+.modal-header {
+  @include flex-between;
+  padding: var(--spacing-5) var(--spacing-6);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.modal-title {
+  @include heading-3;
+}
+
+.modal-close {
+  @include btn-icon;
+}
+
+.modal-content {
+  flex: 1;
+  padding: var(--spacing-6);
+  overflow-y: auto;
+  @include scrollbar-thin;
+}
+
+.modal-footer {
+  @include flex-row(var(--spacing-3));
+  justify-content: flex-end;
+  padding: var(--spacing-4) var(--spacing-6);
+  border-top: 1px solid var(--border-subtle);
+}
+
+// ==========================================
+// CONFIRM DIALOG
+// ==========================================
+
+.confirm-dialog {
+  @extend .modal-dialog;
+  max-width: 400px;
+
+  .confirm-icon {
+    @include flex-center;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto var(--spacing-4);
+    background: rgba(var(--warning-rgb), 0.1);
+    border-radius: var(--radius-full);
+    color: var(--warning);
+
+    &.danger {
+      background: rgba(var(--error-rgb), 0.1);
+      color: var(--error);
+    }
+  }
+
+  .confirm-title {
+    @include heading-3;
+    text-align: center;
+    margin-bottom: var(--spacing-2);
+  }
+
+  .confirm-message {
+    @include body;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+
+  .confirm-actions {
+    @include flex-row(var(--spacing-3));
+    justify-content: center;
+    margin-top: var(--spacing-6);
+  }
+}
+
+// ==========================================
+// DIALOG ANIMATIONS
+// ==========================================
+
+@keyframes dialogBackdropIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes sheetSlideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes sheetSlideOut {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+@keyframes modalZoomIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

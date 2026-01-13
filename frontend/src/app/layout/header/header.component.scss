@@ -1,0 +1,214 @@
+// ============================================
+// Header Component - Floating Glass Style
+// ============================================
+
+.app-header {
+  position: fixed;
+  top: var(--spacing-4);
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - var(--spacing-8));
+  max-width: var(--container-lg);
+  z-index: var(--z-fixed);
+
+  // Glass morphism effect
+  background: rgba(36, 36, 40, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+
+  animation: headerSlideDown 0.5s ease-out;
+}
+
+@keyframes headerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-3) var(--spacing-5);
+  gap: var(--spacing-4);
+}
+
+// ==========================================
+// Logo
+// ==========================================
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  text-decoration: none;
+  transition: all var(--transition-base);
+
+  &:hover {
+    .logo-icon {
+      color: var(--accent-primary);
+      transform: scale(1.1);
+    }
+
+    .logo-text {
+      color: var(--accent-primary);
+    }
+  }
+}
+
+.logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+  transition: all var(--transition-base);
+
+  mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.logo-text {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  transition: color var(--transition-base);
+}
+
+// ==========================================
+// Spacer
+// ==========================================
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+// ==========================================
+// User Section
+// ==========================================
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.theme-toggle,
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-highlight);
+    color: var(--text-primary);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.3);
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.logout-btn:hover {
+  color: var(--error);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-3) var(--spacing-1) var(--spacing-1);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--accent-primary);
+  color: var(--text-inverted);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.user-name {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
+// ==========================================
+// Light Theme Adjustments
+// ==========================================
+
+:host-context(.light-theme) {
+  .app-header {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--border-subtle);
+  }
+}
+
+// ==========================================
+// Mobile Responsive
+// ==========================================
+
+@media (max-width: 640px) {
+  .app-header {
+    top: var(--spacing-2);
+    width: calc(100% - var(--spacing-4));
+    border-radius: var(--radius-lg);
+  }
+
+  .header-content {
+    padding: var(--spacing-2) var(--spacing-3);
+    gap: var(--spacing-2);
+  }
+
+  .logo-text {
+    font-size: var(--text-base);
+  }
+
+  .logo-icon mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}

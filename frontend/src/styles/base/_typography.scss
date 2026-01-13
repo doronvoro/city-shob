@@ -1,0 +1,190 @@
+// ============================================
+// CityShob Design System - Typography
+// ============================================
+
+@use '../abstracts/mixins' as *;
+
+// ==========================================
+// HEADING CLASSES
+// ==========================================
+
+.h1 {
+  @include heading-1;
+}
+
+.h2 {
+  @include heading-2;
+}
+
+.h3 {
+  @include heading-3;
+}
+
+.h4 {
+  @include heading-4;
+}
+
+// ==========================================
+// BODY TEXT CLASSES
+// ==========================================
+
+.body-lg {
+  @include body-lg;
+}
+
+.body {
+  @include body;
+}
+
+.body-sm {
+  @include body-sm;
+}
+
+.caption {
+  @include caption;
+}
+
+.overline {
+  @include overline;
+}
+
+// ==========================================
+// UTILITY TEXT CLASSES
+// ==========================================
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-accent {
+  color: var(--accent-primary);
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.text-warning {
+  color: var(--warning);
+}
+
+.text-error {
+  color: var(--error);
+}
+
+// Font weight
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+// Text alignment
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+// Text transform
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+// Text decoration
+.underline {
+  text-decoration: underline;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.no-underline {
+  text-decoration: none;
+}
+
+// Text wrapping
+.truncate {
+  @include text-truncate;
+}
+
+.line-clamp-2 {
+  @include line-clamp(2);
+}
+
+.line-clamp-3 {
+  @include line-clamp(3);
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.break-words {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+// ==========================================
+// LINK STYLES
+// ==========================================
+
+.link {
+  color: var(--accent-primary);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--accent-primary-hover);
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+.link-subtle {
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}

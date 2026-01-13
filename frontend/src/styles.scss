@@ -1,0 +1,188 @@
+// ============================================
+// CityShob - Main Styles Entry Point
+// Premium B2C Design System
+// ============================================
+
+// Angular Material (using custom theming)
+@use '@angular/material' as mat;
+
+// Design System
+@use 'styles/abstracts' as *;
+@use 'styles/base';
+@use 'styles/components';
+@use 'styles/themes';
+
+// ==========================================
+// ANGULAR MATERIAL CORE
+// ==========================================
+
+@include mat.core();
+
+// Define custom palettes from our colors
+$custom-primary: (
+  50: #fcf8f3,
+  100: #f5ebe0,
+  200: #e8d5c0,
+  300: #dcc0a0,
+  400: #d0aa80,
+  500: #c9a87c,
+  600: #b8956b,
+  700: #a7825a,
+  800: #966f49,
+  900: #855c38,
+  contrast: (
+    50: #2d2d2d,
+    100: #2d2d2d,
+    200: #2d2d2d,
+    300: #2d2d2d,
+    400: #2d2d2d,
+    500: #1a1a1d,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
+
+$custom-accent: (
+  50: #f3f6f2,
+  100: #e1e8de,
+  200: #c3d1bc,
+  300: #a5ba9a,
+  400: #8b9a7d,
+  500: #6d8263,
+  600: #5a6d51,
+  700: #475840,
+  800: #34432f,
+  900: #212e1e,
+  contrast: (
+    50: #2d2d2d,
+    100: #2d2d2d,
+    200: #2d2d2d,
+    300: #2d2d2d,
+    400: #1a1a1d,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
+
+$custom-warn: (
+  50: #fef3f3,
+  100: #fce0e0,
+  200: #f8b8b8,
+  300: #e09090,
+  400: #c47d7d,
+  500: #b06565,
+  600: #994f4f,
+  700: #823a3a,
+  800: #6b2626,
+  900: #541212,
+  contrast: (
+    50: #2d2d2d,
+    100: #2d2d2d,
+    200: #2d2d2d,
+    300: #2d2d2d,
+    400: #1a1a1d,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  )
+);
+
+// Create palettes
+$cityshob-primary: mat.define-palette($custom-primary, 500);
+$cityshob-accent: mat.define-palette($custom-accent, 400);
+$cityshob-warn: mat.define-palette($custom-warn, 500);
+
+// Define dark theme
+$cityshob-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $cityshob-primary,
+    accent: $cityshob-accent,
+    warn: $cityshob-warn,
+  ),
+  typography: mat.define-typography-config(
+    $font-family: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
+  ),
+  density: 0,
+));
+
+// Apply dark theme by default
+@include mat.all-component-themes($cityshob-dark-theme);
+
+// ==========================================
+// GLOBAL LAYOUT
+// ==========================================
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 80px; // Account for floating header
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-lg);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--spacing-4);
+  padding-right: var(--spacing-4);
+}
+
+.container-sm {
+  max-width: var(--container-sm);
+}
+
+.container-md {
+  max-width: var(--container-md);
+}
+
+// ==========================================
+// PAGE TRANSITIONS
+// ==========================================
+
+.page-enter {
+  animation: slideUp 0.4s ease-out;
+}
+
+// ==========================================
+// UTILITIES
+// ==========================================
+
+.full-width {
+  width: 100%;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+// ==========================================
+// ACCESSIBILITY
+// ==========================================
+
+// Skip to main content link
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent-primary);
+  color: var(--text-inverted);
+  padding: var(--spacing-2) var(--spacing-4);
+  z-index: 1000;
+  transition: top 0.2s ease;
+
+  &:focus {
+    top: 0;
+  }
+}

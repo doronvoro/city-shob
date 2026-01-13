@@ -1,0 +1,32 @@
+{
+  "name": "cityshob-todo-app",
+  "version": "1.0.0",
+  "description": "Real-time To-Do application for CityShob interview",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "install:all": "npm install",
+    "start:backend": "npm start -w backend",
+    "start:frontend": "npm start -w frontend",
+    "dev:backend": "npm run dev -w backend",
+    "build:frontend": "npm run build -w frontend",
+    "dev": "concurrently \"npm run dev -w backend\" \"npm start -w frontend\" --names \"backend,frontend\" --prefix name",
+    "start:all": "concurrently \"npm start -w backend\" \"npm start -w frontend\" --names \"backend,frontend\" --prefix name"
+  },
+  "keywords": [
+    "todo",
+    "realtime",
+    "angular",
+    "nodejs",
+    "mongodb",
+    "websocket"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+

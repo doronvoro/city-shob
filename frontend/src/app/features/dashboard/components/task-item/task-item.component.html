@@ -1,0 +1,67 @@
+<div
+  class="task-card"
+  [class.completed]="task.completed"
+  [class.locked]="task.editedBy && task.editedBy !== taskService.getClientId()">
+
+  <div class="task-content">
+    <!-- Custom Checkbox -->
+    <label class="custom-checkbox">
+      <input
+        type="checkbox"
+        [checked]="task.completed"
+        (change)="toggleComplete()"
+        [disabled]="!canEdit">
+      <span class="checkbox-visual"></span>
+    </label>
+
+    <!-- Task Main Content -->
+    <div class="task-main">
+      <h3 class="task-title">{{ task.title }}</h3>
+
+      <p class="task-description" *ngIf="task.description">
+        {{ task.description }}
+      </p>
+
+      <div class="task-meta">
+        <!-- Priority Badge -->
+        <span class="priority-badge" [ngClass]="task.priority.toLowerCase()">
+          {{ task.priority | titlecase }}
+        </span>
+
+        <!-- Due Date -->
+        <span
+          class="due-date"
+          *ngIf="task.dueDate"
+          [class.overdue]="isOverdue()"
+          [class.today]="isToday()">
+          <mat-icon>schedule</mat-icon>
+          {{ formatDate(task.dueDate) }}
+        </span>
+
+        <!-- Lock Indicator -->
+        <span class="lock-indicator" *ngIf="task.editedBy && task.editedBy !== taskService.getClientId()">
+          <span class="editing-pulse"></span>
+          <span>Being edited</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="task-actions">
+      <button
+        class="action-btn"
+        (click)="editTask()"
+        [disabled]="!canEdit || isEditing"
+        title="Edit task">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button
+        class="action-btn delete"
+        (click)="deleteTask()"
+        [disabled]="!canEdit"
+        title="Delete task">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,206 @@
+<div class="auth-page">
+  <!-- Branding Side -->
+  <div class="auth-branding">
+    <div class="branding-content">
+      <!-- Abstract Illustration -->
+      <div class="illustration">
+        <div class="illustration-shapes">
+          <div class="shape shape-1"></div>
+          <div class="shape shape-2"></div>
+          <div class="shape shape-3"></div>
+          <div class="shape shape-4"></div>
+        </div>
+        <div class="illustration-icon">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+      </div>
+
+      <!-- Tagline -->
+      <h1 class="branding-title">Get things done.</h1>
+      <p class="branding-subtitle">
+        A beautiful way to manage your tasks with real-time collaboration.
+      </p>
+
+      <!-- Features -->
+      <div class="features">
+        <div class="feature-item">
+          <mat-icon>sync</mat-icon>
+          <span>Real-time sync</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon>group</mat-icon>
+          <span>Team collaboration</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon>palette</mat-icon>
+          <span>Beautiful design</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Side -->
+  <div class="auth-form-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h2 class="auth-title">{{ isLoginMode ? 'Welcome back' : 'Create account' }}</h2>
+        <p class="auth-subtitle">
+          {{ isLoginMode ? 'Sign in to continue to CityShob' : 'Get started with CityShob today' }}
+        </p>
+      </div>
+
+      <!-- Server Error Alert -->
+      <div class="error-alert" *ngIf="serverError">
+        <div class="error-alert-content">
+          <mat-icon class="error-alert-icon">error</mat-icon>
+          <div class="error-alert-text">
+            <p class="error-alert-title">{{ serverError.message }}</p>
+            <ul class="error-alert-list" *ngIf="serverError.errors && serverError.errors.length > 0">
+              <li *ngFor="let err of serverError.errors">{{ err.message }}</li>
+            </ul>
+          </div>
+        </div>
+        <button type="button" class="error-alert-dismiss" (click)="dismissError()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <form *ngIf="isLoginMode" [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
+        <div class="form-field">
+          <label class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-input"
+            [class.form-input-error]="(loginForm.get('email')?.invalid && loginForm.get('email')?.touched) || getFieldError('email')"
+            formControlName="email"
+            placeholder="you@example.com"
+            autocomplete="email">
+          <div class="form-error" *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">
+            <mat-icon>error_outline</mat-icon>
+            Email is required
+          </div>
+          <div class="form-error" *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
+            <mat-icon>error_outline</mat-icon>
+            Please enter a valid email
+          </div>
+          <div class="form-error server-error" *ngIf="getFieldError('email')">
+            <mat-icon>error_outline</mat-icon>
+            {{ getFieldError('email') }}
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-input"
+            [class.form-input-error]="(loginForm.get('password')?.invalid && loginForm.get('password')?.touched) || getFieldError('password')"
+            formControlName="password"
+            placeholder="Enter your password"
+            autocomplete="current-password">
+          <div class="form-error" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+            <mat-icon>error_outline</mat-icon>
+            Password is required
+          </div>
+          <div class="form-error" *ngIf="loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched">
+            <mat-icon>error_outline</mat-icon>
+            Password must be at least 6 characters
+          </div>
+          <div class="form-error server-error" *ngIf="getFieldError('password')">
+            <mat-icon>error_outline</mat-icon>
+            {{ getFieldError('password') }}
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary btn-full" [disabled]="isLoading || loginForm.invalid">
+          <span *ngIf="!isLoading">Sign in</span>
+          <span *ngIf="isLoading" class="loading-spinner"></span>
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form *ngIf="!isLoginMode" [formGroup]="registerForm" (ngSubmit)="onRegister()" class="auth-form">
+        <div class="form-field">
+          <label class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-input"
+            [class.form-input-error]="(registerForm.get('email')?.invalid && registerForm.get('email')?.touched) || getFieldError('email')"
+            formControlName="email"
+            placeholder="you@example.com"
+            autocomplete="email">
+          <div class="form-error" *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched">
+            <mat-icon>error_outline</mat-icon>
+            Email is required
+          </div>
+          <div class="form-error" *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched">
+            <mat-icon>error_outline</mat-icon>
+            Please enter a valid email
+          </div>
+          <div class="form-error server-error" *ngIf="getFieldError('email')">
+            <mat-icon>error_outline</mat-icon>
+            {{ getFieldError('email') }}
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-input"
+            [class.form-input-error]="(registerForm.get('password')?.invalid && registerForm.get('password')?.touched) || getFieldError('password')"
+            formControlName="password"
+            placeholder="Create a strong password"
+            autocomplete="new-password">
+          <div class="form-error" *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">
+            <mat-icon>error_outline</mat-icon>
+            Password is required
+          </div>
+          <div class="form-error" *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched">
+            <mat-icon>error_outline</mat-icon>
+            Password must be at least 6 characters
+          </div>
+          <div class="form-error server-error" *ngIf="getFieldError('password')">
+            <mat-icon>error_outline</mat-icon>
+            {{ getFieldError('password') }}
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Confirm Password</label>
+          <input
+            type="password"
+            class="form-input"
+            [class.form-input-error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+            formControlName="confirmPassword"
+            placeholder="Confirm your password"
+            autocomplete="new-password">
+          <div class="form-error" *ngIf="registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched">
+            <mat-icon>error_outline</mat-icon>
+            Please confirm your password
+          </div>
+          <div class="form-error" *ngIf="registerForm.get('confirmPassword')?.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched">
+            <mat-icon>error_outline</mat-icon>
+            Passwords do not match
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary btn-full" [disabled]="isLoading || registerForm.invalid">
+          <span *ngIf="!isLoading">Create account</span>
+          <span *ngIf="isLoading" class="loading-spinner"></span>
+        </button>
+      </form>
+
+      <!-- Toggle Mode -->
+      <div class="auth-footer">
+        <p>
+          {{ isLoginMode ? "Don't have an account?" : "Already have an account?" }}
+          <button type="button" class="link-btn" (click)="onToggleMode()">
+            {{ isLoginMode ? 'Sign up' : 'Sign in' }}
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

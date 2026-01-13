@@ -1,0 +1,169 @@
+// ============================================
+// CityShob Design System - Loading Skeletons
+// ============================================
+
+@use '../abstracts/mixins' as *;
+
+// ==========================================
+// BASE SKELETON
+// ==========================================
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-tertiary) 25%,
+    var(--bg-highlight) 50%,
+    var(--bg-tertiary) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+// ==========================================
+// SKELETON SHAPES
+// ==========================================
+
+.skeleton-text {
+  @extend .skeleton;
+  height: 16px;
+  width: 100%;
+
+  &.skeleton-text-sm {
+    height: 12px;
+  }
+
+  &.skeleton-text-lg {
+    height: 20px;
+  }
+}
+
+.skeleton-title {
+  @extend .skeleton;
+  height: 24px;
+  width: 60%;
+}
+
+.skeleton-circle {
+  @extend .skeleton;
+  border-radius: var(--radius-full);
+}
+
+.skeleton-avatar {
+  @extend .skeleton-circle;
+  width: 40px;
+  height: 40px;
+}
+
+.skeleton-avatar-sm {
+  @extend .skeleton-circle;
+  width: 28px;
+  height: 28px;
+}
+
+.skeleton-button {
+  @extend .skeleton;
+  height: 40px;
+  width: 100px;
+  border-radius: var(--radius-md);
+}
+
+.skeleton-badge {
+  @extend .skeleton;
+  height: 22px;
+  width: 60px;
+  border-radius: var(--radius-full);
+}
+
+.skeleton-checkbox {
+  @extend .skeleton;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-sm);
+}
+
+// ==========================================
+// TASK SKELETON
+// ==========================================
+
+.task-skeleton {
+  @include card;
+  padding: var(--spacing-4);
+
+  .task-skeleton-content {
+    @include flex-row(var(--spacing-3));
+    align-items: flex-start;
+  }
+
+  .task-skeleton-main {
+    flex: 1;
+  }
+
+  .task-skeleton-title {
+    @extend .skeleton;
+    height: 16px;
+    width: 60%;
+    margin-bottom: var(--spacing-2);
+  }
+
+  .task-skeleton-description {
+    @extend .skeleton;
+    height: 12px;
+    width: 80%;
+    margin-bottom: var(--spacing-3);
+  }
+
+  .task-skeleton-meta {
+    @include flex-row(var(--spacing-3));
+  }
+}
+
+// ==========================================
+// LIST SKELETON
+// ==========================================
+
+.skeleton-list {
+  @include flex-col(var(--spacing-2));
+
+  .task-skeleton {
+    @for $i from 1 through 5 {
+      &:nth-child(#{$i}) {
+        animation-delay: calc(#{$i} * 0.1s);
+      }
+    }
+  }
+}
+
+// ==========================================
+// AUTH SKELETON
+// ==========================================
+
+.auth-skeleton {
+  width: 100%;
+  max-width: 440px;
+
+  .skeleton-input {
+    @extend .skeleton;
+    height: 48px;
+    margin-bottom: var(--spacing-4);
+  }
+}
+
+// ==========================================
+// HEADER SKELETON
+// ==========================================
+
+.header-skeleton {
+  @include flex-between;
+  padding: var(--spacing-3) var(--spacing-6);
+
+  .skeleton-logo {
+    @extend .skeleton;
+    height: 24px;
+    width: 120px;
+  }
+
+  .skeleton-user {
+    @include flex-row(var(--spacing-3));
+  }
+}

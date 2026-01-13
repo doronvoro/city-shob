@@ -1,0 +1,85 @@
+<div class="task-dashboard">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-left">
+      <h1 class="page-title">My Tasks</h1>
+      <div class="task-stats">
+        <div class="stat-item">
+          <span class="stat-count">{{ tasks.length }}</span>
+          <span class="stat-label">total</span>
+        </div>
+        <div class="stat-item stat-completed">
+          <span class="stat-count">{{ getCompletedCount() }}</span>
+          <span class="stat-label">completed</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-primary add-task-btn" (click)="openAddTaskDialog()">
+      <mat-icon>add</mat-icon>
+      <span class="btn-text">New Task</span>
+    </button>
+  </div>
+
+  <!-- Task Sections -->
+  <div class="task-sections">
+    <!-- Active Tasks -->
+    <section class="task-section" *ngIf="getActiveTasks().length > 0">
+      <div class="section-header">
+        <span class="section-title">To Do</span>
+        <span class="section-count">{{ getActiveTasks().length }}</span>
+      </div>
+      <div class="task-list stagger-list">
+        <app-task-item
+          *ngFor="let task of getActiveTasks(); trackBy: trackByTaskId; let i = index"
+          [task]="task"
+          [style.--stagger-delay]="i * 0.05 + 's'"
+          (taskUpdated)="onTaskUpdated($event)"
+          (taskDeleted)="onTaskDeleted($event)">
+        </app-task-item>
+      </div>
+    </section>
+
+    <!-- Completed Tasks -->
+    <section class="task-section completed-section" *ngIf="getCompletedTasks().length > 0">
+      <div class="section-header">
+        <span class="section-title">Completed</span>
+        <span class="section-count">{{ getCompletedTasks().length }}</span>
+      </div>
+      <div class="task-list stagger-list">
+        <app-task-item
+          *ngFor="let task of getCompletedTasks(); trackBy: trackByTaskId"
+          [task]="task"
+          (taskUpdated)="onTaskUpdated($event)"
+          (taskDeleted)="onTaskDeleted($event)">
+        </app-task-item>
+      </div>
+    </section>
+  </div>
+
+  <!-- Empty State -->
+  <div class="task-empty-state" *ngIf="tasks.length === 0">
+    <div class="empty-illustration">
+      <div class="empty-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+      </div>
+      <div class="empty-icon">
+        <mat-icon>inbox</mat-icon>
+      </div>
+    </div>
+    <h2 class="empty-title">No tasks yet</h2>
+    <p class="empty-description">
+      Create your first task and start getting things done.
+    </p>
+    <button class="btn-primary" (click)="openAddTaskDialog()">
+      <mat-icon>add</mat-icon>
+      Create your first task
+    </button>
+  </div>
+</div>
+
+<!-- Floating Action Button (Mobile) -->
+<button class="fab" (click)="openAddTaskDialog()" *ngIf="tasks.length > 0">
+  <mat-icon>add</mat-icon>
+</button>

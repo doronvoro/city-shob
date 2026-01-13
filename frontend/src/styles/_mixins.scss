@@ -1,0 +1,31 @@
+@use 'variables' as *;
+
+@mixin flex-spacer {
+  flex: 1 1 auto;
+}
+
+@mixin flex-row($gap: $spacing-sm) {
+  display: flex;
+  gap: $gap;
+}
+
+@mixin container {
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: $container-padding;
+}
+
+@mixin task-card-base {
+  margin-bottom: $task-card-margin-bottom;
+}
+
+@mixin completed-task {
+  opacity: $completed-opacity;
+  text-decoration: line-through;
+}
+
+@mixin editing-lock {
+  color: $lock-color;
+  font-size: $lock-font-size;
+  margin-left: $spacing-sm;
+}

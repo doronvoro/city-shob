@@ -1,0 +1,193 @@
+// ============================================
+// CityShob Design System - CSS Custom Properties
+// Hipster, Gender-Neutral B2C Aesthetic
+// ============================================
+
+:root {
+  // ==========================================
+  // DARK MODE (Primary Theme)
+  // ==========================================
+
+  // Backgrounds
+  --bg-primary: #1a1a1d;
+  --bg-secondary: #242428;
+  --bg-tertiary: #2d2d32;
+  --bg-elevated: #323238;
+  --bg-highlight: #3a3a42;
+
+  // Text
+  --text-primary: #f5f5f4;
+  --text-secondary: #a8a8a6;
+  --text-muted: #6b6b69;
+  --text-inverted: #1a1a1d;
+
+  // Accent Colors (Gender-neutral, hipster palette)
+  --accent-primary: #c9a87c;
+  --accent-primary-hover: #d4b68a;
+  --accent-secondary: #8b9a7d;
+  --accent-tertiary: #a18594;
+  --accent-quaternary: #7c8fa8;
+
+  // Priority Colors (avoiding red/yellow/green)
+  --priority-high: #d4a574;
+  --priority-medium: #9b8aa6;
+  --priority-low: #7a9b8e;
+
+  // Status Colors
+  --success: #8b9a7d;
+  --warning: #c9a87c;
+  --error: #c47d7d;
+  --info: #7c8fa8;
+
+  // Borders & Dividers
+  --border-subtle: #2d2d32;
+  --border-default: #3a3a42;
+  --border-strong: #4a4a52;
+
+  // Shadows
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(201, 168, 124, 0.15);
+
+  // RGB values for alpha transparency
+  --accent-primary-rgb: 201, 168, 124;
+  --priority-high-rgb: 212, 165, 116;
+  --priority-medium-rgb: 155, 138, 166;
+  --priority-low-rgb: 122, 155, 142;
+  --warning-rgb: 201, 168, 124;
+  --error-rgb: 196, 125, 125;
+  --success-rgb: 139, 154, 125;
+
+  // ==========================================
+  // SPACING SCALE (8px base grid)
+  // ==========================================
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;   // 4px
+  --spacing-2: 0.5rem;    // 8px
+  --spacing-3: 0.75rem;   // 12px
+  --spacing-4: 1rem;      // 16px
+  --spacing-5: 1.25rem;   // 20px
+  --spacing-6: 1.5rem;    // 24px
+  --spacing-8: 2rem;      // 32px
+  --spacing-10: 2.5rem;   // 40px
+  --spacing-12: 3rem;     // 48px
+  --spacing-16: 4rem;     // 64px
+  --spacing-20: 5rem;     // 80px
+
+  // ==========================================
+  // BORDER RADIUS
+  // ==========================================
+  --radius-none: 0;
+  --radius-sm: 0.375rem;  // 6px
+  --radius-md: 0.5rem;    // 8px
+  --radius-lg: 0.75rem;   // 12px
+  --radius-xl: 1rem;      // 16px
+  --radius-2xl: 1.5rem;   // 24px
+  --radius-full: 9999px;
+
+  // ==========================================
+  // CONTAINER WIDTHS
+  // ==========================================
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+
+  // ==========================================
+  // LAYOUT DIMENSIONS
+  // ==========================================
+  --header-height: 68px;
+  --header-offset: calc(var(--header-height) + var(--spacing-4));
+
+  // ==========================================
+  // TYPOGRAPHY
+  // ==========================================
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  // Font sizes
+  --text-xs: 0.75rem;     // 12px
+  --text-sm: 0.875rem;    // 14px
+  --text-base: 1rem;      // 16px
+  --text-lg: 1.125rem;    // 18px
+  --text-xl: 1.25rem;     // 20px
+  --text-2xl: 1.5rem;     // 24px
+  --text-3xl: 2rem;       // 32px
+  --text-4xl: 2.5rem;     // 40px
+
+  // ==========================================
+  // TRANSITIONS
+  // ==========================================
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+  --transition-spring: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  // ==========================================
+  // Z-INDEX SCALE
+  // ==========================================
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+}
+
+// ==========================================
+// LIGHT MODE THEME
+// ==========================================
+.light-theme {
+  // Backgrounds
+  --bg-primary: #faf9f7;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f5f4f2;
+  --bg-elevated: #ffffff;
+  --bg-highlight: #f0eeeb;
+
+  // Text
+  --text-primary: #2d2d2d;
+  --text-secondary: #5c5c5c;
+  --text-muted: #8c8c8c;
+  --text-inverted: #ffffff;
+
+  // Accent colors (slightly deeper for light mode contrast)
+  --accent-primary: #b8956b;
+  --accent-primary-hover: #a8855b;
+  --accent-secondary: #6d8263;
+  --accent-tertiary: #8a6d7a;
+  --accent-quaternary: #5c7491;
+
+  // Priority
+  --priority-high: #c49156;
+  --priority-medium: #7d6c8a;
+  --priority-low: #5d8272;
+
+  // Status
+  --success: #6d8263;
+  --warning: #b8956b;
+  --error: #b06565;
+  --info: #5c7491;
+
+  // Borders
+  --border-subtle: #edebe8;
+  --border-default: #e0ddd9;
+  --border-strong: #ccc9c4;
+
+  // Shadows
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 20px rgba(184, 149, 107, 0.08);
+
+  // RGB values
+  --accent-primary-rgb: 184, 149, 107;
+  --priority-high-rgb: 196, 145, 86;
+  --priority-medium-rgb: 125, 108, 138;
+  --priority-low-rgb: 93, 130, 114;
+  --warning-rgb: 184, 149, 107;
+  --error-rgb: 176, 101, 101;
+  --success-rgb: 109, 130, 99;
+}

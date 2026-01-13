@@ -1,0 +1,200 @@
+// ============================================
+// CityShob Design System - Empty States
+// ============================================
+
+@use '../abstracts/mixins' as *;
+
+// ==========================================
+// BASE EMPTY STATE
+// ==========================================
+
+.empty-state {
+  @include flex-col(var(--spacing-2));
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-16) var(--spacing-6);
+  text-align: center;
+}
+
+.empty-state-illustration {
+  width: 200px;
+  height: 200px;
+  margin-bottom: var(--spacing-6);
+  opacity: 0.6;
+
+  // CSS-based illustration
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: var(--radius-lg);
+  }
+
+  // Stacked cards illustration
+  &::before {
+    width: 120px;
+    height: 80px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-default);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-6deg);
+  }
+
+  &::after {
+    width: 120px;
+    height: 80px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-default);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(3deg);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.empty-state-title {
+  @include heading-3;
+  margin-bottom: var(--spacing-2);
+}
+
+.empty-state-description {
+  @include body;
+  color: var(--text-secondary);
+  max-width: 320px;
+  margin-bottom: var(--spacing-6);
+}
+
+.empty-state-action {
+  // Uses .btn-primary styling
+}
+
+// ==========================================
+// TASK EMPTY STATE (Specific)
+// ==========================================
+
+.task-empty-state {
+  @extend .empty-state;
+
+  .task-empty-illustration {
+    position: relative;
+    width: 180px;
+    height: 140px;
+    margin-bottom: var(--spacing-6);
+
+    // Checkbox outline
+    &::before {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border: 2px dashed var(--border-strong);
+      border-radius: var(--radius-md);
+      top: 30px;
+      left: 30px;
+    }
+
+    // Lines representing text
+    &::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 8px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-full);
+      top: 45px;
+      left: 90px;
+      box-shadow:
+        0 20px 0 var(--bg-tertiary),
+        0 20px 0 var(--bg-tertiary),
+        -60px 50px 0 var(--border-default),
+        -60px 70px 0 var(--border-default),
+        20px 50px 0 40px var(--bg-tertiary);
+    }
+  }
+}
+
+// ==========================================
+// SEARCH EMPTY STATE
+// ==========================================
+
+.search-empty-state {
+  @extend .empty-state;
+  padding: var(--spacing-12) var(--spacing-6);
+
+  .search-empty-icon {
+    @include flex-center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--spacing-4);
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-full);
+    color: var(--text-muted);
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+}
+
+// ==========================================
+// ERROR EMPTY STATE
+// ==========================================
+
+.error-empty-state {
+  @extend .empty-state;
+
+  .error-icon {
+    @include flex-center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--spacing-4);
+    background: rgba(var(--error-rgb), 0.1);
+    border-radius: var(--radius-full);
+    color: var(--error);
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  .error-code {
+    @include overline;
+    margin-bottom: var(--spacing-2);
+  }
+}
+
+// ==========================================
+// COMPACT EMPTY STATE
+// ==========================================
+
+.empty-state-compact {
+  @include flex-col(var(--spacing-1));
+  align-items: center;
+  padding: var(--spacing-8) var(--spacing-4);
+  text-align: center;
+
+  .empty-icon {
+    @include flex-center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: var(--spacing-3);
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-full);
+    color: var(--text-muted);
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .empty-text {
+    @include body-sm;
+    color: var(--text-secondary);
+  }
+}

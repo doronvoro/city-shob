@@ -1,0 +1,327 @@
+// ============================================
+// Task Item - Glass Card Design
+// ============================================
+
+.task-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+  transition: all var(--transition-base);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--border-default);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+
+    .task-actions {
+      opacity: 1;
+    }
+  }
+
+  // Completed state
+  &.completed {
+    opacity: 0.6;
+
+    .task-title {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .task-description {
+      text-decoration: line-through;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  // Locked state
+  &.locked {
+    border-color: var(--warning);
+    background: rgba(var(--warning-rgb), 0.03);
+
+    &:hover {
+      border-color: var(--warning);
+    }
+  }
+}
+
+// ==========================================
+// Task Content Layout
+// ==========================================
+
+.task-content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-3);
+}
+
+// ==========================================
+// Custom Checkbox
+// ==========================================
+
+.custom-checkbox {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    margin: 0;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  .checkbox-visual {
+    position: absolute;
+    inset: 0;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 6px;
+    background: transparent;
+    transition: all 0.2s ease;
+
+    // Checkmark
+    &::after {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid var(--text-inverted);
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg) scale(0);
+      opacity: 0;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+  }
+
+  input:checked + .checkbox-visual {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+
+    &::after {
+      transform: rotate(45deg) scale(1);
+      opacity: 1;
+    }
+  }
+
+  input:not(:disabled):hover + .checkbox-visual {
+    border-color: var(--accent-primary);
+  }
+
+  input:focus-visible + .checkbox-visual {
+    box-shadow: 0 0 0 3px rgba(var(--accent-primary-rgb), 0.2);
+  }
+}
+
+// ==========================================
+// Task Main Content
+// ==========================================
+
+.task-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-title {
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-1) 0;
+  transition: all var(--transition-base);
+  line-height: 1.4;
+}
+
+.task-description {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-2) 0;
+  line-height: 1.5;
+
+  // Clamp to 2 lines
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ==========================================
+// Task Meta
+// ==========================================
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+}
+
+// Priority Badge
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  &.high {
+    background: rgba(var(--priority-high-rgb), 0.15);
+    color: var(--priority-high);
+    &::before { background: var(--priority-high); }
+  }
+
+  &.medium {
+    background: rgba(var(--priority-medium-rgb), 0.15);
+    color: var(--priority-medium);
+    &::before { background: var(--priority-medium); }
+  }
+
+  &.low {
+    background: rgba(var(--priority-low-rgb), 0.15);
+    color: var(--priority-low);
+    &::before { background: var(--priority-low); }
+  }
+}
+
+// Due Date
+.due-date {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: 12px;
+  color: var(--text-muted);
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+
+  &.overdue {
+    color: var(--error);
+  }
+
+  &.today {
+    color: var(--accent-primary);
+    font-weight: 500;
+  }
+}
+
+// Lock Indicator
+.lock-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-2);
+  background: rgba(var(--warning-rgb), 0.1);
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  color: var(--warning);
+
+  .editing-pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--warning);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+}
+
+// ==========================================
+// Task Actions
+// ==========================================
+
+.task-actions {
+  display: flex;
+  gap: var(--spacing-1);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    opacity: 1;
+  }
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    background: var(--bg-highlight);
+    color: var(--text-primary);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &.delete:hover:not(:disabled) {
+    background: rgba(var(--error-rgb), 0.1);
+    color: var(--error);
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// ==========================================
+// Light Theme Adjustments
+// ==========================================
+
+:host-context(.light-theme) {
+  .task-card {
+    box-shadow: var(--shadow-sm);
+
+    &:hover {
+      box-shadow: var(--shadow-md);
+    }
+  }
+}

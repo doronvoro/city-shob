@@ -1,0 +1,43 @@
+<header class="app-header">
+  <div class="header-content">
+    <!-- Logo -->
+    <a class="logo" routerLink="/dashboard">
+      <span class="logo-icon">
+        <mat-icon>check_circle</mat-icon>
+      </span>
+      <span class="logo-text">CityShob</span>
+    </a>
+
+    <!-- Spacer -->
+    <div class="spacer"></div>
+
+    <!-- User Section -->
+    <div class="user-section" *ngIf="authService.isAuthenticated$ | async">
+      <!-- Theme Toggle -->
+      <button
+        class="theme-toggle"
+        (click)="toggleTheme()"
+        [matTooltip]="themeService.isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
+        matTooltipPosition="below">
+        <mat-icon>{{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+
+      <!-- User Avatar & Name -->
+      <div class="user-info">
+        <div class="user-avatar">
+          {{ getUserInitial() }}
+        </div>
+        <span class="user-name">{{ (authService.currentUser$ | async)?.email }}</span>
+      </div>
+
+      <!-- Logout Button -->
+      <button
+        class="logout-btn"
+        (click)="onLogout()"
+        matTooltip="Sign out"
+        matTooltipPosition="below">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </div>
+</header>
