@@ -4,43 +4,79 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import { Task } from '../../models/task.model';
 import { TaskService } from '../../services/task.service';
+import { FilterService } from '../../services/filter.service';
+import { TaskFilter, DEFAULT_TASK_FILTER } from '../../models/filter.model';
 import { TaskItemComponent } from '../task-item/task-item.component';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
+import { FilterBarComponent } from '../filter-bar/filter-bar.component';
 import { SNACKBAR_DURATION, DIALOG_CONFIG } from '../../../../core/constants';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, TaskItemComponent, MatSnackBarModule, MatDialogModule],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    TaskItemComponent,
+    MatSnackBarModule,
+    MatDialogModule,
+    FilterBarComponent,
+  ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent implements OnInit, OnDestroy {
   private readonly taskService = inject(TaskService);
+  private readonly filterService = inject(FilterService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
 
   tasks: Task[] = [];
+  filteredTasks: Task[] = [];
   private subscription = new Subscription();
+  private readonly filter$ = new BehaviorSubject<TaskFilter>({ ...DEFAULT_TASK_FILTER });
+  filteredTasks$: Observable<Task[]> = this.filterService.createFilteredStream(
+    this.taskService.tasks$,
+    this.filter$
+  );
 
   getCompletedCount = (): number => {
-    return this.tasks.filter(task => task.completed).length;
+    return this.filteredTasks.filter(task => task.completed).length;
+  };
+
+  getTotalCount = (): number => {
+    return this.filteredTasks.length;
   };
 
   getActiveTasks = (): Task[] => {
-    return this.tasks.filter(task => !task.completed);
+    return this.filteredTasks.filter(task => !task.completed);
   };
 
   getCompletedTasks = (): Task[] => {
-    return this.tasks.filter(task => task.completed);
+    return this.filteredTasks.filter(task => task.completed);
+  };
+
+  hasActiveFilters = (): boolean => {
+    return this.filterService.isFilterActive(this.filter$.value);
   };
 
   ngOnInit(): void {
-    const sub = this.taskService.tasks$.subscribe(tasks => this.tasks = tasks);
-    this.subscription.add(sub);
+    // Subscribe to all tasks (for reference)
+    const tasksSub = this.taskService.tasks$.subscribe(tasks => {
+      this.tasks = tasks;
+    });
+    this.subscription.add(tasksSub);
+
+    // Subscribe to filtered tasks (for display)
+    const filteredSub = this.filteredTasks$.subscribe(filtered => {
+      this.filteredTasks = filtered;
+    });
+    this.subscription.add(filteredSub);
+
     this.taskService.getTasks();
   }
 
@@ -79,5 +115,9 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   trackByTaskId(_index: number, task: Task): string {
     return task._id || '';
+  }
+
+  onFilterChange(filter: TaskFilter): void {
+    this.filter$.next(filter);
   }
 }

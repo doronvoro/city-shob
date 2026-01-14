@@ -74,3 +74,10 @@ export const API_ENDPOINTS = {
   AUTH_LOGIN: '/api/auth/login',
   TASKS: '/api/tasks',
 } as const;
+
+/**
+ * Filter configuration
+ */
+export const FILTER_CONFIG = {
+  DEBOUNCE_TIME: 300, // milliseconds
+} as const;

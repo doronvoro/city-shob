@@ -1,0 +1,120 @@
+// ============================================
+// Filter Bar Component Styles
+// ============================================
+
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+  padding: var(--spacing-4);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  animation: slideDown 0.3s ease-out;
+}
+
+// ==========================================
+// Search Field
+// ==========================================
+
+.search-field {
+  width: 100%;
+
+  ::ng-deep {
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      background: var(--bg-primary);
+    }
+  }
+}
+
+// ==========================================
+// Filter Controls
+// ==========================================
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+  align-items: flex-start;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.filter-field {
+  flex: 1;
+  min-width: 140px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: unset;
+  }
+
+  ::ng-deep {
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      background: var(--bg-primary);
+    }
+  }
+}
+
+// ==========================================
+// Clear Filters Button
+// ==========================================
+
+.clear-filters-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-2) var(--spacing-4);
+  height: 56px; // Match form field height
+  border-color: var(--border-default);
+  color: var(--text-secondary);
+  transition: all var(--transition-base);
+
+  &:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .btn-text {
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+// ==========================================
+// Animations
+// ==========================================
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

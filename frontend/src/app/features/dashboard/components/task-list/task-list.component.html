@@ -5,8 +5,11 @@
       <h1 class="page-title">My Tasks</h1>
       <div class="task-stats">
         <div class="stat-item">
-          <span class="stat-count">{{ tasks.length }}</span>
+          <span class="stat-count">{{ getTotalCount() }}</span>
           <span class="stat-label">total</span>
+          <span class="stat-filtered" *ngIf="hasActiveFilters() && getTotalCount() !== tasks.length">
+            ({{ tasks.length }} total)
+          </span>
         </div>
         <div class="stat-item stat-completed">
           <span class="stat-count">{{ getCompletedCount() }}</span>
@@ -20,6 +23,9 @@
       <span class="btn-text">New Task</span>
     </button>
   </div>
+
+  <!-- Filter Bar -->
+  <app-filter-bar (filterChange)="onFilterChange($event)"></app-filter-bar>
 
   <!-- Task Sections -->
   <div class="task-sections">
@@ -57,7 +63,7 @@
     </section>
   </div>
 
-  <!-- Empty State -->
+  <!-- Empty State - No Tasks -->
   <div class="task-empty-state" *ngIf="tasks.length === 0">
     <div class="empty-illustration">
       <div class="empty-shapes">
@@ -76,6 +82,23 @@
       <mat-icon>add</mat-icon>
       Create your first task
     </button>
+  </div>
+
+  <!-- Empty State - No Results from Filters -->
+  <div class="task-empty-state" *ngIf="tasks.length > 0 && filteredTasks.length === 0">
+    <div class="empty-illustration">
+      <div class="empty-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+      </div>
+      <div class="empty-icon">
+        <mat-icon>search_off</mat-icon>
+      </div>
+    </div>
+    <h2 class="empty-title">No tasks match your filters</h2>
+    <p class="empty-description">
+      Try adjusting your search or filter criteria to see more tasks.
+    </p>
   </div>
 </div>
 
