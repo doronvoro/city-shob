@@ -3,7 +3,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 import { Task } from '../models/task.model';
 import { TaskFilter, DEFAULT_TASK_FILTER } from '../models/filter.model';
-import { TaskPriority } from '../../../core/constants';
+import { TaskPriority, TaskStatus, FILTER_VALUES } from '../../../core/constants';
 
 /**
  * Filter Service - handles task filtering logic using RxJS
@@ -33,14 +33,14 @@ export class FilterService {
     }
 
     // Apply priority filter
-    if (filter.priority !== 'all') {
+    if (filter.priority !== FILTER_VALUES.ALL) {
       filtered = filtered.filter(task => task.priority === filter.priority);
     }
 
     // Apply status filter
-    if (filter.status === 'active') {
+    if (filter.status === TaskStatus.ACTIVE) {
       filtered = filtered.filter(task => !task.completed);
-    } else if (filter.status === 'completed') {
+    } else if (filter.status === TaskStatus.COMPLETED) {
       filtered = filtered.filter(task => task.completed);
     }
 
@@ -86,8 +86,8 @@ export class FilterService {
   isFilterActive(filter: TaskFilter): boolean {
     return (
       filter.searchQuery.trim() !== '' ||
-      filter.priority !== 'all' ||
-      filter.status !== 'all'
+      filter.priority !== FILTER_VALUES.ALL ||
+      filter.status !== TaskStatus.ALL
     );
   }
 

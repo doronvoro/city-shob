@@ -37,6 +37,22 @@ export enum TaskPriority {
 }
 
 /**
+ * Task status enum for filtering
+ */
+export enum TaskStatus {
+  ALL = 'all',
+  ACTIVE = 'active',
+  COMPLETED = 'completed',
+}
+
+/**
+ * Filter values for "all" option
+ */
+export const FILTER_VALUES = {
+  ALL: 'all',
+} as const;
+
+/**
  * Priority to Material color mapping
  */
 export const PRIORITY_COLORS: Record<TaskPriority, string> = {

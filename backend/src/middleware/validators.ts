@@ -1,6 +1,7 @@
 import { body, param, query, validationResult, ValidationChain } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
 import { TaskPriority } from '../types';
+import { VALIDATION_MESSAGES } from '../constants';
 
 /**
  * Middleware to handle validation errors
@@ -14,7 +15,7 @@ export const handleValidationErrors = (
   if (!errors.isEmpty()) {
     res.status(400).json({
       success: false,
-      message: 'Validation failed',
+      message: VALIDATION_MESSAGES.VALIDATION_FAILED,
       errors: errors.array().map(err => ({
         field: 'path' in err ? err.path : 'unknown',
         message: err.msg
@@ -34,12 +35,12 @@ const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
 export const registerValidation: ValidationChain[] = [
   body('email')
     .trim()
-    .notEmpty().withMessage('Email is required')
-    .isEmail().withMessage('Invalid email format')
+    .notEmpty().withMessage(VALIDATION_MESSAGES.EMAIL_REQUIRED)
+    .isEmail().withMessage(VALIDATION_MESSAGES.INVALID_EMAIL)
     .normalizeEmail(),
   body('password')
-    .notEmpty().withMessage('Password is required')
-    .matches(PASSWORD_REGEX).withMessage('Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number')
+    .notEmpty().withMessage(VALIDATION_MESSAGES.PASSWORD_REQUIRED)
+    .matches(PASSWORD_REGEX).withMessage(VALIDATION_MESSAGES.PASSWORD_REQUIREMENTS)
 ];
 
 /**
@@ -48,11 +49,11 @@ export const registerValidation: ValidationChain[] = [
 export const loginValidation: ValidationChain[] = [
   body('email')
     .trim()
-    .notEmpty().withMessage('Email is required')
-    .isEmail().withMessage('Invalid email format')
+    .notEmpty().withMessage(VALIDATION_MESSAGES.EMAIL_REQUIRED)
+    .isEmail().withMessage(VALIDATION_MESSAGES.INVALID_EMAIL)
     .normalizeEmail(),
   body('password')
-    .notEmpty().withMessage('Password is required')
+    .notEmpty().withMessage(VALIDATION_MESSAGES.PASSWORD_REQUIRED)
 ];
 
 /**
@@ -61,21 +62,21 @@ export const loginValidation: ValidationChain[] = [
 export const createTaskValidation: ValidationChain[] = [
   body('title')
     .trim()
-    .notEmpty().withMessage('Title is required')
-    .isLength({ min: 1, max: 200 }).withMessage('Title must be 1-200 characters'),
+    .notEmpty().withMessage(VALIDATION_MESSAGES.TITLE_REQUIRED)
+    .isLength({ min: 1, max: 200 }).withMessage(VALIDATION_MESSAGES.TITLE_LENGTH),
   body('description')
     .optional()
     .trim()
-    .isLength({ max: 2000 }).withMessage('Description must be less than 2000 characters'),
+    .isLength({ max: 2000 }).withMessage(VALIDATION_MESSAGES.DESCRIPTION_LENGTH),
   body('priority')
     .optional()
-    .isIn(Object.values(TaskPriority)).withMessage('Priority must be low, medium, or high'),
+    .isIn(Object.values(TaskPriority)).withMessage(VALIDATION_MESSAGES.PRIORITY_INVALID),
   body('dueDate')
     .optional({ nullable: true })
-    .isISO8601().withMessage('Due date must be a valid date'),
+    .isISO8601().withMessage(VALIDATION_MESSAGES.DUE_DATE_INVALID),
   body('completed')
     .optional()
-    .isBoolean().withMessage('Completed must be a boolean')
+    .isBoolean().withMessage(VALIDATION_MESSAGES.COMPLETED_INVALID)
 ];
 
 /**
@@ -83,27 +84,27 @@ export const createTaskValidation: ValidationChain[] = [
  */
 export const updateTaskValidation: ValidationChain[] = [
   param('id')
-    .isMongoId().withMessage('Invalid task ID'),
+    .isMongoId().withMessage(VALIDATION_MESSAGES.TASK_ID_INVALID),
   body('title')
     .optional()
     .trim()
-    .isLength({ min: 1, max: 200 }).withMessage('Title must be 1-200 characters'),
+    .isLength({ min: 1, max: 200 }).withMessage(VALIDATION_MESSAGES.TITLE_LENGTH),
   body('description')
     .optional()
     .trim()
-    .isLength({ max: 2000 }).withMessage('Description must be less than 2000 characters'),
+    .isLength({ max: 2000 }).withMessage(VALIDATION_MESSAGES.DESCRIPTION_LENGTH),
   body('priority')
     .optional()
-    .isIn(Object.values(TaskPriority)).withMessage('Priority must be low, medium, or high'),
+    .isIn(Object.values(TaskPriority)).withMessage(VALIDATION_MESSAGES.PRIORITY_INVALID),
   body('dueDate')
     .optional({ nullable: true })
-    .isISO8601().withMessage('Due date must be a valid date'),
+    .isISO8601().withMessage(VALIDATION_MESSAGES.DUE_DATE_INVALID),
   body('completed')
     .optional()
-    .isBoolean().withMessage('Completed must be a boolean'),
+    .isBoolean().withMessage(VALIDATION_MESSAGES.COMPLETED_INVALID),
   body('clientId')
     .optional()
-    .isString().withMessage('Client ID must be a string')
+    .isString().withMessage(VALIDATION_MESSAGES.CLIENT_ID_INVALID)
 ];
 
 /**
@@ -111,7 +112,7 @@ export const updateTaskValidation: ValidationChain[] = [
  */
 export const taskIdValidation: ValidationChain[] = [
   param('id')
-    .isMongoId().withMessage('Invalid task ID')
+    .isMongoId().withMessage(VALIDATION_MESSAGES.TASK_ID_INVALID)
 ];
 
 /**
@@ -120,10 +121,10 @@ export const taskIdValidation: ValidationChain[] = [
 export const paginationValidation: ValidationChain[] = [
   query('page')
     .optional()
-    .isInt({ min: 1 }).withMessage('Page must be a positive integer')
+    .isInt({ min: 1 }).withMessage(VALIDATION_MESSAGES.PAGE_INVALID)
     .toInt(),
   query('limit')
     .optional()
-    .isInt({ min: 1, max: 100 }).withMessage('Limit must be between 1 and 100')
+    .isInt({ min: 1, max: 100 }).withMessage(VALIDATION_MESSAGES.LIMIT_INVALID)
     .toInt()
 ];

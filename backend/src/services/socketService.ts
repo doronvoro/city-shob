@@ -2,12 +2,7 @@ import { Server as SocketIOServer, Socket } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import TaskRepository from '../repositories/TaskRepository';
 import { TaskData, SocketTaskData, SocketDeleteData, SocketLockData, ClientInfo, JwtPayload } from '../types';
-
-// Room names
-const ROOMS = {
-  TASKS: 'tasks', // All clients interested in task updates
-  AUTHENTICATED: 'authenticated' // Authenticated users only
-} as const;
+import { SOCKET_ROOMS, SOCKET_ROOM_PREFIXES, ERROR_MESSAGES } from '../constants';
 
 /**
  * Extended socket type with custom data
@@ -100,11 +95,11 @@ class SocketService {
       });
 
       // Join appropriate rooms
-      socket.join(ROOMS.TASKS);
+      socket.join(SOCKET_ROOMS.TASKS);
       if (socket.data.isAuthenticated) {
-        socket.join(ROOMS.AUTHENTICATED);
+        socket.join(SOCKET_ROOMS.AUTHENTICATED);
         // Join user-specific room for targeted messages
-        socket.join(`user:${socket.data.userId}`);
+        socket.join(`${SOCKET_ROOM_PREFIXES.USER}${socket.data.userId}`);
       }
 
       // Handle task creation (requires authentication for createdBy tracking)
@@ -119,10 +114,10 @@ class SocketService {
           const task = await TaskRepository.create(taskWithCreator);
 
           // Broadcast to tasks room
-          this.io!.to(ROOMS.TASKS).emit('task:created', task);
+          this.io!.to(SOCKET_ROOMS.TASKS).emit('task:created', task);
         } catch (error) {
           const err = error as Error;
-          socket.emit('error', { message: 'Failed to create task', error: err.message });
+          socket.emit('error', { message: ERROR_MESSAGES.FAILED_TO_CREATE_TASK, error: err.message });
         }
       });
 
@@ -139,21 +134,21 @@ class SocketService {
             const lockStatus = await TaskRepository.checkLockStatus(id, effectiveClientId);
             if (lockStatus.locked) {
               socket.emit('error', {
-                message: 'Task is being edited by another user',
+                message: ERROR_MESSAGES.TASK_EDITED_BY_OTHER,
                 taskId: id,
                 lockedBy: lockStatus.lockedBy
               });
             } else {
-              socket.emit('error', { message: 'Task not found', taskId: id });
+              socket.emit('error', { message: ERROR_MESSAGES.TASK_NOT_FOUND, taskId: id });
             }
             return;
           }
 
           // Broadcast to tasks room
-          this.io!.to(ROOMS.TASKS).emit('task:updated', updatedTask);
+          this.io!.to(SOCKET_ROOMS.TASKS).emit('task:updated', updatedTask);
         } catch (error) {
           const err = error as Error;
-          socket.emit('error', { message: 'Failed to update task', error: err.message });
+          socket.emit('error', { message: ERROR_MESSAGES.FAILED_TO_UPDATE_TASK, error: err.message });
         }
       });
 
@@ -169,21 +164,21 @@ class SocketService {
             const lockStatus = await TaskRepository.checkLockStatus(id, effectiveClientId);
             if (lockStatus.locked) {
               socket.emit('error', {
-                message: 'Cannot delete task being edited by another user',
+                message: ERROR_MESSAGES.TASK_DELETE_LOCKED,
                 taskId: id,
                 lockedBy: lockStatus.lockedBy
               });
             } else {
-              socket.emit('error', { message: 'Task not found', taskId: id });
+              socket.emit('error', { message: ERROR_MESSAGES.TASK_NOT_FOUND, taskId: id });
             }
             return;
           }
 
           // Broadcast to tasks room
-          this.io!.to(ROOMS.TASKS).emit('task:deleted', { id });
+          this.io!.to(SOCKET_ROOMS.TASKS).emit('task:deleted', { id });
         } catch (error) {
           const err = error as Error;
-          socket.emit('error', { message: 'Failed to delete task', error: err.message });
+          socket.emit('error', { message: ERROR_MESSAGES.FAILED_TO_DELETE_TASK, error: err.message });
         }
       });
 
@@ -199,17 +194,17 @@ class SocketService {
             const lockStatus = await TaskRepository.checkLockStatus(id, effectiveClientId);
             socket.emit('task:lock-failed', {
               id,
-              message: 'Task is already being edited',
+              message: ERROR_MESSAGES.TASK_ALREADY_EDITED,
               editedBy: lockStatus.lockedBy
             });
             return;
           }
 
           // Notify all clients in tasks room about the lock
-          this.io!.to(ROOMS.TASKS).emit('task:locked', { id, editedBy: effectiveClientId });
+          this.io!.to(SOCKET_ROOMS.TASKS).emit('task:locked', { id, editedBy: effectiveClientId });
         } catch (error) {
           const err = error as Error;
-          socket.emit('error', { message: 'Failed to lock task', error: err.message });
+          socket.emit('error', { message: ERROR_MESSAGES.FAILED_TO_LOCK_TASK, error: err.message });
         }
       });
 
@@ -221,10 +216,10 @@ class SocketService {
           await TaskRepository.releaseLock(id, effectiveClientId);
 
           // Notify all clients in tasks room about the unlock
-          this.io!.to(ROOMS.TASKS).emit('task:unlocked', { id });
+          this.io!.to(SOCKET_ROOMS.TASKS).emit('task:unlocked', { id });
         } catch (error) {
           const err = error as Error;
-          socket.emit('error', { message: 'Failed to unlock task', error: err.message });
+          socket.emit('error', { message: ERROR_MESSAGES.FAILED_TO_UNLOCK_TASK, error: err.message });
         }
       });
 
@@ -238,7 +233,7 @@ class SocketService {
           if (releasedCount > 0) {
             console.log(`Released ${releasedCount} orphaned lock(s) for client: ${clientId}`);
             // Notify other clients about the released locks
-            this.io!.to(ROOMS.TASKS).emit('locks:released', { clientId, count: releasedCount });
+            this.io!.to(SOCKET_ROOMS.TASKS).emit('locks:released', { clientId, count: releasedCount });
           }
         } catch (error) {
           console.error(`Failed to release locks for client ${clientId}:`, (error as Error).message);
@@ -256,7 +251,7 @@ class SocketService {
    */
   broadcast(event: string, data: unknown): void {
     if (this.io) {
-      this.io.to(ROOMS.TASKS).emit(event, data);
+      this.io.to(SOCKET_ROOMS.TASKS).emit(event, data);
     }
   }
 
@@ -268,7 +263,7 @@ class SocketService {
    */
   sendToUser(userId: string, event: string, data: unknown): void {
     if (this.io) {
-      this.io.to(`user:${userId}`).emit(event, data);
+      this.io.to(`${SOCKET_ROOM_PREFIXES.USER}${userId}`).emit(event, data);
     }
   }
 

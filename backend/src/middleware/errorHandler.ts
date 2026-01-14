@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../types';
+import { ERROR_MESSAGES } from '../constants';
 
 /**
  * Custom error class for operational errors
@@ -35,7 +36,7 @@ export const notFoundHandler = (
   _res: Response,
   next: NextFunction
 ): void => {
-  next(new ApiError(404, `Route ${req.originalUrl} not found`));
+  next(new ApiError(404, ERROR_MESSAGES.ROUTE_NOT_FOUND(req.originalUrl)));
 };
 
 /**
@@ -49,7 +50,7 @@ export const errorHandler = (
   _next: NextFunction
 ): void => {
   const statusCode = err.statusCode || 500;
-  const message = err.message || 'Internal Server Error';
+  const message = err.message || ERROR_MESSAGES.INTERNAL_SERVER_ERROR;
 
   // Log error for debugging (in production, use proper logging service)
   console.error(`[Error] ${statusCode}: ${message}`);

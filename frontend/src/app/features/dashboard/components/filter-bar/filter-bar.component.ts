@@ -10,8 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { TaskFilter, DEFAULT_TASK_FILTER } from '../../models/filter.model';
-import { TaskPriority } from '../../../../core/constants';
-import { FILTER_CONFIG } from '../../../../core/constants';
+import { TaskPriority, TaskStatus, FILTER_VALUES, FILTER_CONFIG } from '../../../../core/constants';
 
 /**
  * Filter Bar Component - provides search and filter controls for tasks
@@ -41,23 +40,23 @@ export class FilterBarComponent implements OnInit, OnDestroy {
 
   filterForm: FormGroup;
   readonly priorities = [
-    { value: 'all', label: 'All Priorities' },
+    { value: FILTER_VALUES.ALL, label: 'All Priorities' },
     { value: TaskPriority.HIGH, label: 'High' },
     { value: TaskPriority.MEDIUM, label: 'Medium' },
     { value: TaskPriority.LOW, label: 'Low' },
   ];
 
   readonly statusOptions = [
-    { value: 'all', label: 'All Status' },
-    { value: 'active', label: 'Active' },
-    { value: 'completed', label: 'Completed' },
+    { value: TaskStatus.ALL, label: 'All Status' },
+    { value: TaskStatus.ACTIVE, label: 'Active' },
+    { value: TaskStatus.COMPLETED, label: 'Completed' },
   ];
 
   constructor() {
     this.filterForm = this.fb.group({
       searchQuery: [''],
-      priority: ['all'],
-      status: ['all'],
+      priority: [FILTER_VALUES.ALL],
+      status: [TaskStatus.ALL],
     });
   }
 
@@ -98,8 +97,8 @@ export class FilterBarComponent implements OnInit, OnDestroy {
   private emitFilterChange(): void {
     const filter: TaskFilter = {
       searchQuery: this.filterForm.get('searchQuery')?.value || '',
-      priority: this.filterForm.get('priority')?.value || 'all',
-      status: this.filterForm.get('status')?.value || 'all',
+      priority: this.filterForm.get('priority')?.value || FILTER_VALUES.ALL,
+      status: this.filterForm.get('status')?.value || TaskStatus.ALL,
     };
     this.filterChange.emit(filter);
   }
@@ -127,8 +126,8 @@ export class FilterBarComponent implements OnInit, OnDestroy {
     const values = this.filterForm.value;
     return (
       (values.searchQuery?.trim() || '') !== '' ||
-      values.priority !== 'all' ||
-      values.status !== 'all'
+      values.priority !== FILTER_VALUES.ALL ||
+      values.status !== TaskStatus.ALL
     );
   }
 

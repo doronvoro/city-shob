@@ -1,14 +1,14 @@
-import { TaskPriority } from '../../../core/constants';
+import { TaskPriority, TaskStatus, FILTER_VALUES } from '../../../core/constants';
 
 /**
  * Task status filter options
  */
-export type TaskStatusFilter = 'all' | 'active' | 'completed';
+export type TaskStatusFilter = TaskStatus;
 
 /**
  * Priority filter options
  */
-export type PriorityFilter = TaskPriority | 'all';
+export type PriorityFilter = TaskPriority | typeof FILTER_VALUES.ALL;
 
 /**
  * Task filter interface - defines all filter criteria
@@ -24,6 +24,6 @@ export interface TaskFilter {
  */
 export const DEFAULT_TASK_FILTER: TaskFilter = {
   searchQuery: '',
-  priority: 'all',
-  status: 'all',
+  priority: FILTER_VALUES.ALL,
+  status: TaskStatus.ALL,
 };

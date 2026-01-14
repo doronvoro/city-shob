@@ -9,6 +9,7 @@ import {
   loginValidation,
   handleValidationErrors
 } from '../middleware/validators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../constants';
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ const router = express.Router();
 const getJwtSecret = (): string => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
-    throw new ApiError(500, 'JWT_SECRET environment variable is not configured');
+    throw new ApiError(500, ERROR_MESSAGES.JWT_SECRET_MISSING);
   }
   return secret;
 };
@@ -38,7 +39,7 @@ router.post(
     // Check if user already exists by email
     const existingEmail = await UserRepository.findByEmail(email);
     if (existingEmail) {
-      throw new ApiError(400, 'Email is already registered');
+      throw new ApiError(400, ERROR_MESSAGES.EMAIL_ALREADY_REGISTERED);
     }
 
     // Create user
@@ -55,7 +56,7 @@ router.post(
 
     res.status(201).json({
       success: true,
-      message: 'User created successfully',
+      message: SUCCESS_MESSAGES.USER_CREATED,
       token,
       user: {
         id: user._id,
@@ -80,13 +81,13 @@ router.post(
     // Find user
     const user = await UserRepository.findByEmail(email);
     if (!user) {
-      throw new ApiError(401, 'Invalid credentials');
+      throw new ApiError(401, ERROR_MESSAGES.INVALID_CREDENTIALS);
     }
 
     // Check password
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
-      throw new ApiError(401, 'Invalid credentials');
+      throw new ApiError(401, ERROR_MESSAGES.INVALID_CREDENTIALS);
     }
 
     // Generate JWT token
@@ -99,7 +100,7 @@ router.post(
 
     res.json({
       success: true,
-      message: 'Login successful',
+      message: SUCCESS_MESSAGES.LOGIN_SUCCESSFUL,
       token,
       user: {
         id: user._id,

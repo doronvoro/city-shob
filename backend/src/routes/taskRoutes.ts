@@ -10,6 +10,7 @@ import {
   paginationValidation,
   handleValidationErrors
 } from '../middleware/validators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../constants';
 
 const router = express.Router();
 
@@ -41,7 +42,7 @@ router.get(
   asyncHandler(async (req: express.Request, res: Response): Promise<void> => {
     const task = await TaskRepository.findById(req.params.id);
     if (!task) {
-      throw new ApiError(404, 'Task not found');
+      throw new ApiError(404, ERROR_MESSAGES.TASK_NOT_FOUND);
     }
     res.json(task);
   })
@@ -86,9 +87,9 @@ router.put(
       // Check if it was a lock conflict or not found
       const lockStatus = await TaskRepository.checkLockStatus(id, clientId || '');
       if (lockStatus.locked) {
-        throw new ApiError(409, 'Task is being edited by another user');
+        throw new ApiError(409, ERROR_MESSAGES.TASK_EDITED_BY_OTHER);
       }
-      throw new ApiError(404, 'Task not found');
+      throw new ApiError(404, ERROR_MESSAGES.TASK_NOT_FOUND);
     }
 
     res.json(updatedTask);
@@ -114,12 +115,12 @@ router.delete(
     if (!deletedTask) {
       const lockStatus = await TaskRepository.checkLockStatus(id, clientId || '');
       if (lockStatus.locked) {
-        throw new ApiError(409, 'Cannot delete task being edited by another user');
+        throw new ApiError(409, ERROR_MESSAGES.TASK_DELETE_LOCKED);
       }
-      throw new ApiError(404, 'Task not found');
+      throw new ApiError(404, ERROR_MESSAGES.TASK_NOT_FOUND);
     }
 
-    res.json({ message: 'Task deleted successfully', task: deletedTask });
+    res.json({ message: SUCCESS_MESSAGES.TASK_DELETED, task: deletedTask });
   })
 );
 
