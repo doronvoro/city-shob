@@ -327,6 +327,25 @@
   --mat-select-arrow-color: var(--text-secondary);
 }
 
+// Ensure selected value is visible
+.mat-mdc-select-value {
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-select-value-text {
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-select-trigger {
+  .mat-mdc-select-value {
+    color: var(--text-primary) !important;
+  }
+
+  .mat-mdc-select-value-text {
+    color: var(--text-primary) !important;
+  }
+}
+
 .mat-mdc-select-panel {
   background: var(--bg-elevated) !important;
   border: 1px solid var(--border-default) !important;

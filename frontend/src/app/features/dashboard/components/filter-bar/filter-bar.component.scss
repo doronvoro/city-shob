@@ -64,6 +64,25 @@
     .mat-mdc-text-field-wrapper {
       background: var(--bg-primary);
     }
+
+    // Ensure selected value is visible in select dropdowns
+    .mat-mdc-select-value {
+      color: var(--text-primary) !important;
+    }
+
+    .mat-mdc-select-value-text {
+      color: var(--text-primary) !important;
+    }
+
+    .mat-mdc-select-trigger {
+      .mat-mdc-select-value {
+        color: var(--text-primary) !important;
+      }
+
+      .mat-mdc-select-value-text {
+        color: var(--text-primary) !important;
+      }
+    }
   }
 }
 
