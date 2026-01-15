@@ -130,6 +130,7 @@ export class TaskItemComponent implements OnInit, OnDestroy, OnChanges {
       this.isEditing = false;
       if (result) {
         this.taskService.updateTask(this.task._id!, result);
+        this.taskService.unlockTask(this.task._id!);
         this.snackBar.open('Task updated successfully', 'Close', {
           duration: SNACKBAR_DURATION.SHORT
         });
