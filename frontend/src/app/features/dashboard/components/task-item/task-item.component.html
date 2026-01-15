@@ -1,7 +1,7 @@
 <div
   class="task-card"
   [class.completed]="task.completed"
-  [class.locked]="task.editedBy && task.editedBy !== taskService.getClientId()">
+  [class.locked]="isLocked">
 
   <div class="task-content">
     <!-- Custom Checkbox -->
@@ -10,7 +10,7 @@
         type="checkbox"
         [checked]="task.completed"
         (change)="toggleComplete()"
-        [disabled]="!canEdit">
+        [disabled]="isLocked">
       <span class="checkbox-visual"></span>
     </label>
 
@@ -39,7 +39,7 @@
         </span>
 
         <!-- Lock Indicator -->
-        <span class="lock-indicator" *ngIf="task.editedBy && task.editedBy !== taskService.getClientId()">
+        <span class="lock-indicator" *ngIf="isLocked">
           <span class="editing-pulse"></span>
           <span>Being edited</span>
         </span>
@@ -51,14 +51,14 @@
       <button
         class="action-btn"
         (click)="editTask()"
-        [disabled]="!canEdit || isEditing"
+        [disabled]="isLocked || isEditing"
         title="Edit task">
         <mat-icon>edit</mat-icon>
       </button>
       <button
         class="action-btn delete"
         (click)="deleteTask()"
-        [disabled]="!canEdit"
+        [disabled]="isLocked"
         title="Delete task">
         <mat-icon>delete</mat-icon>
       </button>

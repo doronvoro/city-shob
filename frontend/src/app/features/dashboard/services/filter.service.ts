@@ -73,7 +73,9 @@ export class FilterService {
             prevTask.priority === currTask.priority &&
             prevTask.title === currTask.title &&
             prevTask.description === currTask.description &&
-            prevTask.dueDate === currTask.dueDate
+            prevTask.dueDate === currTask.dueDate &&
+            prevTask.editedBy === currTask.editedBy &&
+            prevTask.editedAt === currTask.editedAt
           );
         });
       })

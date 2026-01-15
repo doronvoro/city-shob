@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -30,7 +30,7 @@ import { PRIORITY_COLORS, SNACKBAR_DURATION, DIALOG_CONFIG, TaskPriority } from 
   templateUrl: './task-item.component.html',
   styleUrls: ['./task-item.component.scss']
 })
-export class TaskItemComponent implements OnInit, OnDestroy {
+export class TaskItemComponent implements OnInit, OnDestroy, OnChanges {
   @Input({ required: true }) task!: Task;
   @Output() taskUpdated = new EventEmitter<Task>();
   @Output() taskDeleted = new EventEmitter<string>();
@@ -42,11 +42,23 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   canEdit = false;
   isEditing = false;
   private subscription = new Subscription();
+  private previousIsLocked: boolean | null = null;
 
   ngOnInit(): void {
     this.updateCanEdit();
-    const sub = this.taskService.tasks$.subscribe(() => this.updateCanEdit());
+    this.checkLockStateChange();
+    const sub = this.taskService.tasks$.subscribe(() => {
+      this.updateCanEdit();
+      this.checkLockStateChange();
+    });
     this.subscription.add(sub);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['task'] && !changes['task'].firstChange) {
+      this.updateCanEdit();
+      this.checkLockStateChange();
+    }
   }
 
   ngOnDestroy(): void {
@@ -55,6 +67,34 @@ export class TaskItemComponent implements OnInit, OnDestroy {
 
   private updateCanEdit = (): void => {
     this.canEdit = this.taskService.canEditTask(this.task);
+  };
+
+  /**
+   * Check if task is currently locked (by another user)
+   */
+  get isLocked(): boolean {
+    return !!(this.task.editedBy && this.task.editedBy !== this.taskService.getClientId());
+  }
+
+  /**
+   * Log when CSS locked class state changes
+   */
+  private checkLockStateChange = (): void => {
+    const currentIsLocked = this.isLocked;
+    
+    if (this.previousIsLocked !== null && this.previousIsLocked !== currentIsLocked) {
+      console.log('[TaskItem] CSS locked class state changed:', {
+        taskId: this.task._id,
+        taskTitle: this.task.title,
+        previousState: this.previousIsLocked ? 'locked' : 'unlocked',
+        currentState: currentIsLocked ? 'locked' : 'unlocked',
+        editedBy: this.task.editedBy,
+        currentClientId: this.taskService.getClientId(),
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    this.previousIsLocked = currentIsLocked;
   };
 
   toggleComplete = (): void => {

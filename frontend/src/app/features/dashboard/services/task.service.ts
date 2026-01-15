@@ -55,10 +55,21 @@ export class TaskService implements OnDestroy {
     });
 
     this.socket.on(SOCKET_EVENTS.TASK_LOCKED, (data: { id: string; editedBy: string }) => {
+      console.log('[WebSocket] Task locked message received:', {
+        taskId: data.id,
+        editedBy: data.editedBy,
+        currentClientId: this.clientId,
+        timestamp: new Date().toISOString()
+      });
       this.updateTaskLockState(data.id, data.editedBy);
     });
 
     this.socket.on(SOCKET_EVENTS.TASK_UNLOCKED, (data: { id: string }) => {
+      console.log('[WebSocket] Task unlocked message received:', {
+        taskId: data.id,
+        currentClientId: this.clientId,
+        timestamp: new Date().toISOString()
+      });
       this.updateTaskLockState(data.id, null);
     });
 
@@ -165,6 +176,21 @@ export class TaskService implements OnDestroy {
    */
   private updateTaskLockState = (taskId: string, editedBy: string | null): void => {
     const currentTasks = this.tasksSubject.value;
+    const task = currentTasks.find(t => t._id === taskId);
+    const wasLocked = task?.editedBy ? true : false;
+    const isLocked = editedBy ? true : false;
+    
+    if (wasLocked !== isLocked || task?.editedBy !== editedBy) {
+      console.log('[TaskService] Updating task lock state:', {
+        taskId,
+        previousEditedBy: task?.editedBy || null,
+        newEditedBy: editedBy,
+        wasLocked,
+        isLocked,
+        timestamp: new Date().toISOString()
+      });
+    }
+    
     this.tasksSubject.next(
       currentTasks.map(t =>
         t._id === taskId
