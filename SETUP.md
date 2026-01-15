@@ -55,7 +55,18 @@ docker run -d -p 27017:27017 --name mongodb mongo
 
 ## Step-by-Step Setup
 
-### 1. Start MongoDB
+### 1. Install All Dependencies
+
+This project uses **npm workspaces** to manage both frontend and backend dependencies. Install everything from the root directory:
+
+```bash
+# From the project root directory
+npm install
+```
+
+This will install dependencies for both `backend` and `frontend` workspaces automatically.
+
+### 2. Start MongoDB
 
 Make sure MongoDB is running on your system:
 
@@ -75,14 +86,11 @@ docker start mongodb
 
 **Note**: If you're using MongoDB Atlas (cloud), you don't need to start a local MongoDB server.
 
-### 2. Backend Setup
+### 3. Backend Configuration
 
 ```bash
 # Navigate to backend directory
 cd backend
-
-# Install dependencies
-npm install
 
 # Create .env file from example
 cp .env.example .env
@@ -93,51 +101,76 @@ node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 
 # Edit .env with your MongoDB URI and the generated JWT secret
 # ⚠️ IMPORTANT: Replace 'your-secret-key-change-in-production' with the generated secret
-
-# Build TypeScript code (for production)
-npm run build
-
-# Start the server
-npm start
-
-# Or for development with auto-reload (uses ts-node)
-npm run dev
 ```
 
-The backend should now be running on `http://localhost:3000`
+### 4. Start the Application
 
-### 3. Frontend Setup
+You have several options to run the application:
 
-Open a new terminal window:
+#### Option A: Run Both Frontend and Backend Together (Recommended)
+
+From the project root:
 
 ```bash
-# Navigate to frontend directory
+# Development mode (with auto-reload for both)
+npm run dev
+
+# Production mode (builds and starts both)
+npm run start:all
+```
+
+#### Option B: Run Separately
+
+**Backend** (from project root):
+```bash
+# Development mode with auto-reload
+npm run dev:backend
+
+# Or production mode
+npm run start:backend
+```
+
+**Frontend** (from project root, in a new terminal):
+```bash
+npm run start:frontend
+```
+
+#### Option C: Run from Individual Workspaces
+
+If you prefer to run from individual workspace directories:
+
+**Backend:**
+```bash
+cd backend
+npm run dev  # Development mode
+# or
+npm start    # Production mode (requires: npm run build first)
+```
+
+**Frontend:**
+```bash
 cd frontend
-
-# Install dependencies
-npm install
-
-# Start the development server
 npm start
 ```
 
-The frontend should now be running on `http://localhost:4200`
+The backend should be running on `http://localhost:3000`  
+The frontend should be running on `http://localhost:4200`
 
-### 4. Access the Application
+### 5. Access the Application
 
 Open your browser and navigate to:
 ```
 http://localhost:4200
 ```
 
-### 5. Create Your First Account
+### 6. Create Your First Account
 
 1. Click on "Register" if you don't have an account
 2. Fill in username, email, and password
 3. Click "Register"
 4. You'll be automatically logged in
 
-### 6. Test Real-Time Features
+### 7. Test Real-Time Features
 
 1. Open the application in multiple browser windows/tabs
 2. Create a task in one window
@@ -174,8 +207,19 @@ If you see CORS errors:
 
 ## Development Tips
 
-- Use `npm run dev` in backend for auto-reload on code changes
-- Angular dev server has hot-reload enabled by default
-- Check browser console and terminal for error messages
-- MongoDB Compass is helpful for viewing database contents
+- **Use npm workspaces**: Run commands from the root using workspace scripts (e.g., `npm run dev:backend`)
+- **Quick start**: Use `npm run dev` from root to start both frontend and backend in development mode
+- **Auto-reload**: Backend uses nodemon for auto-reload, Angular dev server has hot-reload enabled by default
+- **Check logs**: Monitor browser console and terminal for error messages
+- **Database tools**: MongoDB Compass is helpful for viewing database contents
+
+## Available Scripts (from root directory)
+
+- `npm install` - Install all dependencies for both workspaces
+- `npm run dev` - Start both frontend and backend in development mode
+- `npm run start:all` - Start both frontend and backend in production mode
+- `npm run dev:backend` - Start only backend in development mode
+- `npm run start:backend` - Start only backend in production mode
+- `npm run start:frontend` - Start only frontend
+- `npm run build:frontend` - Build frontend for production
 
