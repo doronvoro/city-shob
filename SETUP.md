@@ -86,7 +86,13 @@ npm install
 
 # Create .env file from example
 cp .env.example .env
-# Edit .env with your MongoDB URI and JWT secret
+
+# Generate a secure JWT secret
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+# Copy the output and paste it as JWT_SECRET in .env file
+
+# Edit .env with your MongoDB URI and the generated JWT secret
+# ⚠️ IMPORTANT: Replace 'your-secret-key-change-in-production' with the generated secret
 
 # Build TypeScript code (for production)
 npm run build

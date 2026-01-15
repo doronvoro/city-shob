@@ -123,13 +123,23 @@ npm install
 cp backend/.env.example backend/.env
 ```
 
-Or create it manually with:
+3. **IMPORTANT**: Generate a secure JWT secret and update it in `.env`:
+```bash
+# Generate a secure random secret (run this command)
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
+# Copy the output and paste it as the JWT_SECRET value in backend/.env
+```
+
+Or create `.env` manually with:
 ```env
 PORT=3000
 MONGODB_URI=mongodb://localhost:27017/cityshob-todo
-JWT_SECRET=your-secret-key-change-in-production
+JWT_SECRET=<paste-your-generated-secret-here>
 FRONTEND_URL=http://localhost:4200
 ```
+
+**⚠️ Security Note**: Never use the placeholder value `your-secret-key-change-in-production` in production. Always generate a unique, secure random string for `JWT_SECRET`.
 
 3. Make sure MongoDB is running on your system.
 
